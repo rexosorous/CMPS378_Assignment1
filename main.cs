@@ -24,19 +24,19 @@ namespace Assignment1
             Console.Write("Should we use 50c coins (y/n)? ");
             var use_50c = Console.ReadLine();
 
-            price = 1 - (price % 1);    // don't hand out coins when bills can be used
-            if (price != 1) {   // if the customer did not give exact change
+            price = (paid - price) % 1;    // don't hand out coins when bills can be used
+            if (price > 0) {   // if the customer did not give exact change
                 Console.WriteLine($"After handing out dollar bills, the value of the change is ${price}");  // show the value of the change needed to be dispensed
 
                 // determine the amount of each denomination of coin to be used
                 int fifties = 0;
                 if (use_50c == "y") {
-                    fifties = CalcCoinAmt(0.5f, ref price);
+                    fifties = CalcCoinAmt(0.5F, ref price);
                 }
-                int quarters = CalcCoinAmt(0.25f, ref price);
-                int dimes = CalcCoinAmt(0.1f, ref price);
-                int nickels = CalcCoinAmt(0.05f, ref price);
-                int pennies = CalcCoinAmt(0.01f, ref price);
+                int quarters = CalcCoinAmt(0.25F, ref price);
+                int dimes = CalcCoinAmt(0.1F, ref price);
+                int nickels = CalcCoinAmt(0.05F, ref price);
+                int pennies = CalcCoinAmt(0.01F, ref price);
 
                 // output results
                 Console.WriteLine("The change that should be dispensed is:");
@@ -46,8 +46,11 @@ namespace Assignment1
                 Console.WriteLine($"\tnickel : {nickels}");
                 Console.WriteLine($"\tpenny  : {pennies}");
             }
+            else if (price < 0) { // if the customer did not give enough money to make the purchas
+                Console.WriteLine("Customer did not give enough money to pay for this transaction.");
+            }
             else {  // if the customer gave out exact change
-                Console.WriteLine($"Customer has given exact change and no coins need to be dispensed.");
+                Console.WriteLine("Customer has given exact change and no coins need to be dispensed.");
             }
             Console.ReadKey();
         }
